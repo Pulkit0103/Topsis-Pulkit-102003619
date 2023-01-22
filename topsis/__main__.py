@@ -4,6 +4,25 @@ import copy
 import sys 
 from pathlib import Path
 
+# Function to get array of rank
+def find_rank(topsis_score):
+  ranks = []
+  copy_list = copy.deepcopy(topsis_score)
+  copy_list.sort(reverse=True)
+  for i in range(len(topsis_score)):
+    ele = topsis_score[i]
+    ranks.append(copy_list.index(ele)+1)
+  return ranks
+
+# Function for calculating weighted values
+def apply_weights(matrix, weights):
+  rows, cols = np.shape(matrix)
+  for j in range(cols):
+    for i in range(rows):
+      matrix[i][j] *= weights[j]
+  return(matrix)
+
+
 # Function for normalization
 def normalize(matrix):
   rows,cols = np.shape(matrix)
@@ -19,15 +38,8 @@ def normalize(matrix):
       matrix[i][j] /= square_sum[j]  
   return matrix
 
-# Function for weighted values
-def apply_weights(matrix, weights):
-  rows, cols = np.shape(matrix)
-  for j in range(cols):
-    for i in range(rows):
-      matrix[i][j] *= weights[j]
-  return(matrix)
 
-# Function to find topsis score
+# Function to Calculate topsis score
 def find_topsis_score(matrix,impacts):
   rows,cols = np.shape(matrix)
   ideal_best = []
@@ -55,15 +67,6 @@ def find_topsis_score(matrix,impacts):
   
   return topsis_score_vector
 
-# Function to get rank array
-def find_rank(topsis_score):
-  ranks = []
-  copy_list = copy.deepcopy(topsis_score)
-  copy_list.sort(reverse=True)
-  for i in range(len(topsis_score)):
-    ele = topsis_score[i]
-    ranks.append(copy_list.index(ele)+1)
-  return ranks
 
 
 def main():
